@@ -8,7 +8,7 @@ import static junit.framework.TestCase.assertTrue;
 import static junit.framework.TestCase.fail;
 
 /**
- * Example 1: Serialize and deserialize an object.
+ * Listing 1: Serialize and deserialize an object.
  *
  * Serialization is the process of converting an eligible object into a sequence
  * of bytes which can be reconstituted into an object at a later time.
@@ -23,7 +23,7 @@ import static junit.framework.TestCase.fail;
  * Serializable objects are serialized using ObjectOutputStreams and
  * deserialized using ObjectInputStreams, as demonstrated below.
  */
-public class ExampleOne {
+public class Listing1 {
 
     private static class CanSerialize implements Serializable { }
 
