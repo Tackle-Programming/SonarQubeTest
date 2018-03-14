@@ -32,12 +32,11 @@ public class ExampleOne {
     @Test
     public void canSerializeTheSerializableClass() {
         CanSerialize instance = new CanSerialize();
-        CanSerialize copy = null;
+        Object copy = null;
 
         try {
             copy = deserialize(
-                    serialize(instance),
-                    CanSerialize.class);
+                    serialize(instance));
         } catch (IOException e) {
             e.printStackTrace();
             fail("Failed to serialize or deserialize the object");
@@ -49,6 +48,8 @@ public class ExampleOne {
                 instance != copy);
         assertTrue("The deserialized object is reconstituted",
                 copy != null);
+        assertTrue("The deserialized object is the expected type",
+                copy instanceof CanSerialize);
     }
 
     @Test(expected = IOException.class)
@@ -71,14 +72,14 @@ public class ExampleOne {
         }
     }
 
-    private <T> T deserialize(byte[] serializedInstance, Class<T> type)
+    private Object deserialize(byte[] serializedInstance)
             throws IOException, ClassNotFoundException {
         try (ByteArrayInputStream byteStream =
                      new ByteArrayInputStream(serializedInstance);
              ObjectInputStream objectStream =
                      new ObjectInputStream(byteStream)
         ) {
-            return type.cast(objectStream.readObject());
+            return objectStream.readObject();
         }
     }
 
