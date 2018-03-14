@@ -1,4 +1,4 @@
-package com.github.tomboyo;
+package com.github.tomboyo.serializationStudy;
 
 import org.junit.Test;
 
