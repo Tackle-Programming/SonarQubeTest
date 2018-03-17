@@ -34,15 +34,8 @@ public class Listing1 {
         CanSerialize instance = new CanSerialize();
         Object copy;
 
-        try {
-            copy = deserialize(
-                    serialize(instance));
-        } catch (Exception e) {
-            // This listing is not concerned with exceptions. These are here for
-            // development only.
-            e.printStackTrace();
-            throw e;
-        }
+        copy = deserialize(
+                serialize(instance));
 
         assertTrue("Deserialized data occupies a different memory address",
                 instance != copy);
