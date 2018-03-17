@@ -14,7 +14,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 
 /**
- * Listing 3: Custom Serialized Form
+ * Listing 3: The `writeObject` and `readObject` methods control serial format
  *
  * (See Effective Java 2nd Ed. item 75, from which this listing draws heavily.)
  *
@@ -24,7 +24,7 @@ import static org.junit.Assert.assertFalse;
  * implementation details of the serialized class (e.g. it captures the
  * pointers in a linked list or the array in a sequentially allocated list). A
  * class utilizing default serialization, once modified, may lose compatibility
- * with previous version of itself.
+ * with previous versions of itself.
  *
  * When we implement read/writeObject, our intent is to capture the logical
  * form of the class only, eliding implementation details whenever possible.
@@ -35,7 +35,7 @@ public class Listing3 {
 
     /**
      * A rudimentary singly-linked list of Strings. It is a circular list
-     * whose beginning and end is marked by the sentinal Node, head.
+     * whose beginning and end is marked by the sentinal Node "head".
      */
     private static final class List implements Serializable {
 
@@ -105,8 +105,8 @@ public class Listing3 {
         private void readObject(ObjectInputStream in)
                 throws IOException, ClassNotFoundException {
             initialize(); // TODO see listing X
-            int elements = in.readInt();
-            for (int i = 0; i < elements; i++) {
+            int numberOfElements = in.readInt();
+            for (int i = 0; i < numberOfElements; i++) {
                 add((String) in.readObject());
             }
         }
@@ -114,6 +114,24 @@ public class Listing3 {
 
     @RunWith(Enclosed.class)
     public static final class ListTest {
+
+        public static final class ListSerializationTests {
+
+            @Test
+            public void canBeSerialized() throws Exception {
+                List in = new List();
+                in.add("a");
+                in.add("b");
+
+                List out = SerializeUtil.deserialize(
+                        SerializeUtil.serialize(in),
+                        List.class);
+
+                assertEquals(2, out.size);
+                assertTrue(out.contains("a"));
+                assertTrue(out.contains("b"));
+            }
+        }
 
         public static final class ListBehaviorTests {
 
@@ -144,24 +162,6 @@ public class Listing3 {
 
                 list.add("");
                 assertEquals(2, list.size);
-            }
-        }
-
-        public static final class ListSerializationTests {
-
-            @Test
-            public void canBeSerialized() throws Exception {
-                List in = new List();
-                in.add("a");
-                in.add("b");
-
-                List out = SerializeUtil.deserialize(
-                        SerializeUtil.serialize(in),
-                        List.class);
-
-                assertEquals(2, out.size);
-                assertTrue(out.contains("a"));
-                assertTrue(out.contains("b"));
             }
         }
     }

@@ -2,12 +2,14 @@ package com.github.tomboyo.serializationStudy;
 
 import org.junit.Test;
 
+import java.io.IOException;
+import java.io.NotSerializableException;
 import java.io.Serializable;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertEquals;
 
 /**
- * Listing 2. Serialization of member data
+ * Listing 2. Serialization of fields
  *
  * When an object is serialized, its references will be serialized
  * recursively to deeply represent the object.
@@ -45,7 +47,7 @@ public class Listing2 {
 
     @Test
     public void nontransientFieldsAreSerialized()
-            throws Exception {
+            throws IOException, ClassNotFoundException {
 
         final A in = new A(
                 1,
@@ -57,14 +59,15 @@ public class Listing2 {
                 SerializeUtil.serialize(in),
                 A.class);
 
-        assertTrue("The persistent primitive int was serialized",
-                out.persistentInt == in.persistentInt);
-        assertTrue("The persistent String was serialized",
-                out.persistentString.equals(in.persistentString));
+        assertEquals("The persistent primitive int was serialized",
+                out.persistentInt, in.persistentInt);
+        assertEquals("The persistent String was serialized",
+                out.persistentString, in.persistentString);
     }
 
     @Test
-    public void transientFieldsAreDefaulted() throws Exception {
+    public void transientFieldsAreDefaulted()
+            throws IOException, ClassNotFoundException{
         final A in = new A(
                 1,
                 "cats",
@@ -75,14 +78,15 @@ public class Listing2 {
                 SerializeUtil.serialize(in),
                 A.class);
 
-        assertTrue("The transient int has defaulted to 0",
-                out.transientInt == 0);
-        assertTrue("The transient String has defaulted to null",
-                out.transientString == null);
+        assertEquals("The transient int has defaulted to 0",
+                0, out.transientInt);
+        assertEquals("The transient String has defaulted to null",
+                null, out.transientString);
     }
 
     @Test
-    public void staticFieldsAreIgnored() throws Exception {
+    public void staticFieldsAreIgnored()
+            throws IOException, ClassNotFoundException {
         final A in = new A(
                 1,
                 "cats",
@@ -91,12 +95,27 @@ public class Listing2 {
 
         A.staticInt = 5;
         byte[] serialized = SerializeUtil.serialize(in);
-        assertTrue("The static field is not affected by serialization",
-                A.staticInt == 5);
+        assertEquals("The static field is not affected by serialization",
+                5, A.staticInt);
 
         A.staticInt = 12;
         SerializeUtil.deserialize(serialized, A.class);
-        assertTrue("The static field is not affected by deserialization",
-                A.staticInt == 12);
+        assertEquals("The static field is not affected by deserialization",
+                12, A.staticInt);
+    }
+
+    private static final class B implements Serializable {
+        // Object is not serializable!
+        Object notSerializable;
+
+        public B (Object object) {
+            this.notSerializable = object;
+        }
+    }
+
+    @Test(expected = NotSerializableException.class)
+    public void nonserializableFieldsWillThrowExceptions() throws IOException {
+        SerializeUtil.serialize(
+                new B(new Object()));
     }
 }

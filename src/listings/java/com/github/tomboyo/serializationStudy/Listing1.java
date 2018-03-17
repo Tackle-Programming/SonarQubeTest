@@ -5,10 +5,10 @@ import org.junit.Test;
 import java.io.*;
 
 import static junit.framework.TestCase.assertTrue;
-import static junit.framework.TestCase.fail;
 
 /**
- * Listing 1: Serialize and deserialize an object.
+ * Listing 1: Serialize and deserialize with `ObjectOuputStream` and
+ * `ObjectInputStream`
  *
  * Java objects and primitives can be serialized into and deserialized from
  * byte sequences, which allows information to be shared over networks,
@@ -45,12 +45,9 @@ public class Listing1 {
                 copy instanceof CanSerialize);
     }
 
-    @Test(expected = IOException.class)
+    @Test(expected = NotSerializableException.class)
     public void canNotSerializeTheNonSerializableClass() throws IOException {
-        CanNotSerialize instance = new CanNotSerialize();
-
-        serialize(instance);
-        fail("Classes must implement java.io.Serializable to serialize");
+        serialize(new CanNotSerialize());
     }
 
     private byte[] serialize(Object toSerialize)
