@@ -10,15 +10,15 @@ import static junit.framework.TestCase.fail;
 /**
  * Listing 1: Serialize and deserialize an object.
  *
- * Serialization is the process of converting an eligible object into a sequence
- * of bytes which can be reconstituted into an object at a later time.
- * Deserialization is the process of reconstituting those bytes back into an
- * object.
+ * Java objects and primitives can be serialized into and deserialized from
+ * byte sequences, which allows information to be shared over networks,
+ * persisted to disc, and so on.
  *
- * An object which is eligible for serialization implements the
- * java.io.Serializable interface, which is simply a marker interface.
- * Objects which do not implement Serializable can not be serialized. Any
- * attempt to do so will result in a java.io.NotSerializableException.
+ * An object which implements the java.io.Serializable or
+ * java.io.Externalizable interfaces can be serialized. Objects which do
+ * not cannot be serialized, and any attempt to do so will result in
+ * java.io.NotSerializableExceptions. (This listing will focus on the
+ * Serializable interface TODO: A later listing will focus on Externalizable.)
  *
  * Serializable objects are serialized using ObjectOutputStreams and
  * deserialized using ObjectInputStreams, as demonstrated below.
