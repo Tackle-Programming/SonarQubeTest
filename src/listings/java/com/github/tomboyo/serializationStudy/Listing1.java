@@ -30,18 +30,18 @@ public class Listing1 {
     private static class CanNotSerialize { }
 
     @Test
-    public void canSerializeTheSerializableClass() {
+    public void canSerializeTheSerializableClass() throws Exception {
         CanSerialize instance = new CanSerialize();
-        Object copy = null;
+        Object copy;
 
         try {
             copy = deserialize(
                     serialize(instance));
-        } catch (IOException e) {
+        } catch (Exception e) {
+            // This listing is not concerned with exceptions. These are here for
+            // development only.
             e.printStackTrace();
-            fail("Failed to serialize or deserialize the object");
-        } catch (ClassNotFoundException e) {
-            fail("Not applicable. This will be discussed in another example.");
+            throw e;
         }
 
         assertTrue("Deserialized data occupies a different memory address",

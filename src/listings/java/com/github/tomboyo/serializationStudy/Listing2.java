@@ -45,7 +45,7 @@ public class Listing2 {
     }
 
     @Test
-    public void testTransientFieldsAndSerialization() throws Exception {
+    public void onlyNontransientFieldsAreSerialized() throws Exception {
 
         final A in = new A(
                 1,
