@@ -11,6 +11,7 @@ The basic listings demonstrate core concepts to java serialization. These ignore
   - Static fields are not serialized
   - Non-serializable fields throw NotSerializableException if serialized
 - Listing 3: The `writeObject` and `readObject` methods control serial format
+- Listing 4: Demonstrate serialization of data to a file using FileOutputStream
 - TODO Listing ?: Document with `@serial`, `@serialField`, and `@serialData`
 - TODO Listing ?: Causes of and how to handle serialization exceptions
 ### Caveat Listings
