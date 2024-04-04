@@ -27,6 +27,8 @@ public class Listing1 {
 
     private static class CanSerialize implements Serializable { }
 
+
+    
     private static class CanNotSerialize { }
 
     @Test
